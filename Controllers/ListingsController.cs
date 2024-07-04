@@ -46,11 +46,13 @@ namespace ValueBid.Controllers
 
                     return View(listing);
                 }
-
+        */
                 // GET: Listings/Create
+
+                //updated Create route
                 public IActionResult Create()
                 {
-                    ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
+
                     return View();
                 }
 
@@ -70,7 +72,7 @@ namespace ValueBid.Controllers
                     ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", listing.IdentityUserId);
                     return View(listing);
                 }
-
+        /*
                 // GET: Listings/Edit/5
                 public async Task<IActionResult> Edit(int? id)
                 {
