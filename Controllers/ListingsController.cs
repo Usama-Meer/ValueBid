@@ -40,10 +40,10 @@ namespace ValueBid.Controllers
                     {
                         return NotFound();
                     }
-
-                    var listing = await _context.Listings
-                        .Include(l => l.User)
-                        .FirstOrDefaultAsync(m => m.Id == id);
+                    //calling listingsService's GetById method
+                    var listing= await _listingsService.GetById(id);
+                        
+                    
                     if (listing == null)
                     {
                         return NotFound();
