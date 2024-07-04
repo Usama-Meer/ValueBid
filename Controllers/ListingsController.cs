@@ -87,7 +87,7 @@ namespace ValueBid.Controllers
 
                         }
 
-                        //object is created for displaying
+                        //object is created
                         var listObj=new Listing 
                         {
                             Title=listing.Title,
@@ -96,9 +96,12 @@ namespace ValueBid.Controllers
                             ImagePath=fileName,
                         };
 
+                        await _listingsService.Add(listObj);
+
                         //redirect to the index
                         return RedirectToAction(nameof(Index));
                     }
+
                     
                 }
         /*
