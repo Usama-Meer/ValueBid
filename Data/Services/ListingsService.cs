@@ -8,6 +8,8 @@ namespace ValueBid.Data.Services
         public readonly ApplicationDbContext _context;
         public IQueryable<Listing> GetAll()
         {
+
+            //added from index route of controller
             var applicationDbContext=_context.Listings.Include(I=>I.User);
             return applicationDbContext;
         }
