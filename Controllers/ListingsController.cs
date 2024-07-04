@@ -101,7 +101,8 @@ namespace ValueBid.Controllers
                         //redirect to the index
                         return RedirectToAction(nameof(Index));
                     }
-
+                    //in case of error is adding listing, it will return to listing page
+                    return View(listing);
                     
                 }
         /*
