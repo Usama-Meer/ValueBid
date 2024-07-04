@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using ValueBid.Models;
 
 namespace ValueBid.Data
 {
@@ -9,5 +10,11 @@ namespace ValueBid.Data
             : base(options)
         {
         }
+
+        public DbSet<Listing> Listings { get; set; }
+        public DbSet<Bid> Bids { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
     }
 }
