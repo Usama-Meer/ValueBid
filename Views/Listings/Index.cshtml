@@ -14,7 +14,10 @@
 {
     <div class="container" style="background-color: rgba(138,129,133,0.6); margin-top:50px; margin-bottum:50px; padding;2px; border-radius:10px;">
         <div class="row">
-               <div class="col col-xs-6 col-lg-5">
+                <div class="col col-xs-6 col-lg-5">
+                    <img src="~/Images/@listing.ImagePath" style="max-width:400px;max-height:400px;"/>
+                </div>
+               <div class="col col-xs-6 col-lg-7">
                     <h5><a asp-action="Details" asp-route-itemid="@listing.Id" style="color:black;"> @listing.Title </a></h5>
                <div> @listing.Description</div>
                <div> Bid: $@listing.Price.ToString("N2")</div>
