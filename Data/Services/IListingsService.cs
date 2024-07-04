@@ -8,5 +8,8 @@ namespace ValueBid.Data.Services
         
         //added add method
         Task Add(Listing listing);
+
+        //added for details
+        Task<Listing> GetById(int? id);
     }
 }

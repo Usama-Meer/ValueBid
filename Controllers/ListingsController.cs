@@ -32,7 +32,7 @@ namespace ValueBid.Controllers
             var applicationDbContext = _listingsService.GetAll();
             return View(await applicationDbContext.ToListAsync());
         }
-        /*
+        
                 // GET: Listings/Details/5
                 public async Task<IActionResult> Details(int? id)
                 {
@@ -51,7 +51,7 @@ namespace ValueBid.Controllers
 
                     return View(listing);
                 }
-        */
+        
                 // GET: Listings/Create
 
                 //updated Create route
@@ -158,7 +158,7 @@ namespace ValueBid.Controllers
                     ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", listing.IdentityUserId);
                     return View(listing);
                 }
-
+        
                 // GET: Listings/Delete/5
                 public async Task<IActionResult> Delete(int? id)
                 {
@@ -177,7 +177,7 @@ namespace ValueBid.Controllers
 
                     return View(listing);
                 }
-
+        /*
                 // POST: Listings/Delete/5
                 [HttpPost, ActionName("Delete")]
                 [ValidateAntiForgeryToken]
