@@ -33,24 +33,24 @@ namespace ValueBid.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
         
-                // GET: Listings/Details/5
-                public async Task<IActionResult> Details(int? id)
-                {
-                    if (id == null)
-                    {
-                        return NotFound();
-                    }
-                    //calling listingsService's GetById method
-                    var listing= await _listingsService.GetById(id);
+        // GET: Listings/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            //calling listingsService's GetById method
+            var listing= await _listingsService.GetById(id);
                         
                     
-                    if (listing == null)
-                    {
-                        return NotFound();
-                    }
+            if (listing == null)
+            {
+                return NotFound();
+            }
 
-                    return View(listing);
-                }
+            return View(listing);
+        }
         
                 // GET: Listings/Create
 
