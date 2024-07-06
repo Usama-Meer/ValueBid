@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Auctions
+namespace ValueBid
 {
     public class PaginatedList<T> : List<T>
     {

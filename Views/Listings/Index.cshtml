@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<ValueBid.Models.Listing>
+@ IEnumerable<ValueBid.Models.PaginatedList>
 
 @{
     ViewData["Title"] = "Index";
@@ -33,3 +34,19 @@
 {
     <p>No Active Listing</p>
 }
+
+<div class="d-flex justify-content-center">
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex - 1)"
+       class="btn btn-default @prevDisabled">
+        Previous
+    </a>
+    <div class="btn" style="cursor: default">
+        Page @Model.PageIndex of @Model.TotalPages
+    </div>
+    <a asp-action="Index"
+       asp-route-pageNumber="@(Model.PageIndex + 1)"
+       class="btn btn-default @nextDisabled">
+        Next
+    </a>
+</div>
