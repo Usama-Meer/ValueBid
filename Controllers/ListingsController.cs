@@ -21,6 +21,8 @@ namespace ValueBid.Controllers
         //added IwebHostEnvironment
         private readonly IWebHostEnvironment _webHostEnvironment;
 
+        private readonly IBidsService _bidsService;
+
         //added IWebHostEnviornment in the constructor
         public ListingsController(IListingsService listingsService, IWebHostEnvironment webHostEnvironment)
         {
