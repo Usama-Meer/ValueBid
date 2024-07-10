@@ -23,16 +23,16 @@ namespace ValueBid.Controllers
 
         private readonly IBidsService _bidsService;
 
-/*        private readonly ICommentsService _commentsService;*/
+        private readonly ICommentsService _commentsService;
 
       
 
         //added IWebHostEnviornment in the constructor
-        public ListingsController(IListingsService listingsService, IWebHostEnvironment webHostEnvironment) //,ICommentsService commentsService)
+        public ListingsController(IListingsService listingsService, IWebHostEnvironment webHostEnvironment,ICommentsService commentsService)
         {
             _listingsService = listingsService;
             _webHostEnvironment = webHostEnvironment;
-            //_commentsService = commentsService;
+            _commentsService = commentsService;
         }
 
         // GET: Listings
@@ -137,6 +137,38 @@ namespace ValueBid.Controllers
                     //in case of error is adding listing, it will return to listing page
                     return View(listing);
                     
+                }
+
+
+                [HttpPost]
+                public async Task<ActionResult> AddBid([Bind("Id, Price, ListingId, IdentityUserId")] Bid bid)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        await _bidsService.Add(bid);
+                    }
+                    var listing = await _listingsService.GetById(bid.ListingId);
+                    listing.Price = bid.Price;
+                    await _listingsService.SaveChanges();
+
+                    return View("Details", listing);
+                }
+                public async Task<ActionResult> CloseBidding(int id)
+                {
+                    var listing = await _listingsService.GetById(id);
+                    listing.IsSold = true;
+                    await _listingsService.SaveChanges();
+                    return View("Details", listing);
+                }
+                [HttpPost]
+                public async Task<ActionResult> AddComment([Bind("Id, Content, ListingId, IdentityUserId")] Comment comment)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        await _commentsService.Add(comment);
+                    }
+                    var listing = await _listingsService.GetById(comment.ListingId);
+                    return View("Details", listing);
                 }
         /*
                 // GET: Listings/Edit/5

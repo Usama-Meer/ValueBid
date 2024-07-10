@@ -11,5 +11,7 @@ namespace ValueBid.Data.Services
 
         //added for details
         Task<Listing> GetById(int? id);
+
+        Task SaveChanges();
     }
 }
