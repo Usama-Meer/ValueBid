@@ -17,6 +17,7 @@ builder.Services.AddControllersWithViews();
 
 //adding scoped service(IListingsService as parameter of ListingsService)
 builder.Services.AddScoped<IListingsService, ListingsService>();
+builder.Services.AddScoped<IBidsService, BidsService>();
 
 
 var app = builder.Build();
