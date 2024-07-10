@@ -37,7 +37,9 @@ namespace ValueBid.Data.Services
             return listing;
         }
 
-        public async Task SaveChangesAsync()
+        
+
+        public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();
         }
