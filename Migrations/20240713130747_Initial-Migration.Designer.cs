@@ -9,11 +9,11 @@ using ValueBid.Data;
 
 #nullable disable
 
-namespace ValueBid.Data.Migrations
+namespace ValueBid.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240710073133_updated-migration")]
-    partial class updatedmigration
+    [Migration("20240713130747_Initial-Migration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,9 +238,6 @@ namespace ValueBid.Data.Migrations
                     b.Property<string>("IdentityUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsSold")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("ListingId")
                         .HasColumnType("int");

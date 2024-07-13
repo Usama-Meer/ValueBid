@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ValueBid.Data;
 
 #nullable disable
 
-namespace ValueBid.Data.Migrations
+namespace ValueBid.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240704055259_Intial-Migration")]
-    partial class IntialMigration
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,9 +235,6 @@ namespace ValueBid.Data.Migrations
                     b.Property<string>("IdentityUserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsSold")
-                        .HasColumnType("bit");
 
                     b.Property<int?>("ListingId")
                         .HasColumnType("int");

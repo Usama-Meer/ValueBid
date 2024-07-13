@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ValueBid.Data;
 using ValueBid.Data.Services;
-using static NPOI.XSSF.UserModel.Charts.XSSFLineChartData<Tx, Ty>;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
