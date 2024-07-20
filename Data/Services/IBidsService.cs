@@ -6,5 +6,10 @@ namespace ValueBid.Data.Services
     {
         Task Add(Bid bid);
         IQueryable<Bid> GetAll();
+
+/*        Task Update(int? id, Bid updatedBid);*/
+
     }
+
+
 }

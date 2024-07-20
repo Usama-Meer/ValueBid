@@ -24,5 +24,14 @@ namespace ValueBid.Data.Services
                                        select a;
             return applicationDbContext;
         }
+
+        /*public Task Update(int? id, Bid updatedBid)
+        {
+            var exisitingBid=_context.Bids.FirstOrDefault(l=>l.Id==id);
+            if (exisitingBid != null) {
+                
+                _context.Bids.Entry(exisitingBid).CurrentValues();
+        }*/
     }
+
 }

@@ -2,12 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using ValueBid.Data.Services;
 using ValueBid.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
 
 namespace ValueBid.Data.Services
 {
     public class ListingsService : IListingsService
     {
         private readonly ApplicationDbContext _context;
+
 
         public ListingsService(ApplicationDbContext context)
         {
@@ -16,6 +19,7 @@ namespace ValueBid.Data.Services
 
         public async Task Add(Listing listing)
         {
+            
             _context.Listings.Add(listing);
             await _context.SaveChangesAsync();
         }
@@ -28,7 +32,7 @@ namespace ValueBid.Data.Services
 
         public async Task<Listing> GetById(int? id)
         {
-            var listing = await _context.Listings
+            var listing = await _context.Listings.AsNoTracking()
                 .Include(l => l.User)
                 .Include(l => l.Comments)
                 .Include(l => l.Bids)
@@ -42,6 +46,19 @@ namespace ValueBid.Data.Services
         public async Task SaveChanges()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateListing(Listing listing)
+        {
+            _context.Listings.Update(listing);
+           
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<IdentityUser>> GetAllUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+            return users;
         }
     }
 }

@@ -26,6 +26,7 @@
                 else
                 {
                     <h5>Bidding is closed</h5>
+
                 }
             }
         }
@@ -33,7 +34,7 @@
 
 }
 <!--Details of Listing Object-->
-<h4 style="text-align:center">@Model.Title</h4>
+<h4 style="text-align:center"> </h4>
 <div class="container" style="background-color:rgba(138,129,133,0.6); margin-top:50px;padding:20px; border-radius:10px;">
     <div class="row">
         <div class="col col-xs-6 col-lg-5">
@@ -44,19 +45,32 @@
             <div> @Model.Description</div>
             @if (User.Identity.IsAuthenticated)
             {
+
                 <form asp-action="AddBid" method="post">
                 <div>
                     <!--add bids greater than or equal to Price-->
 
-                    Bid: $<input type="number" min="@Model.Price" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" />
+                    Bid: $<input type="number" min="@Model.Price" step="1" name="Price" placeholder="@Model.Price.ToString("N2")" required />
                     
                     <!--Name of the user who submits the bid-->
                     <input type="hidden" name="IdentityUserId" class="form-control" value="@userManager.GetUserId(User)" />
 
                     <!--listingId-->
                     <input type="hidden" name="ListingId" class="form-control" value="@Model.Id" />
+                    
+                    @if (userManager.GetUserId(User) != Model.User.Id)
+                        {
+                            <input type="submit" class="btn btn-primary"/>
 
-                    <input type="submit" class="btn btn-primary" />
+                        }
+                        else
+                        {
+
+                            <input type="submit" class="btn btn-primary" disabled title="Item creator cannot bid" />
+
+
+                            
+                        }
 
 
 
@@ -143,7 +157,7 @@ else
     @foreach(var comment in @Model.Comments)
     {
         <div style="border:1px solid lightgray; margin:10px; padding:10px;border-radius:10px;width:40%;">
-            <p>@comment.Content -@comment.User.UserName</p>
+            <p>@comment.Content @comment.User.UserName</p>
         </div>
     }
 </div>

@@ -9,9 +9,9 @@ using ValueBid.Data;
 using ValueBid.Models;
 using ValueBid.Data.Services;
 using System.Security.Claims;
-using ValueBid.Data.Services;
-using ValueBid.Models;
 using ValueBid;
+using NPOI.HPSF;
+using System.Drawing;
 
 namespace ValueBid.Controllers
 {
@@ -33,11 +33,19 @@ namespace ValueBid.Controllers
         // GET: Listings
         public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
+            //importing from listingsService
             var applicationDbContext = _listingsService.GetAll();
+
+            //user fixed
             int pageSize = 3;
+
+            //incase of search
             if (!string.IsNullOrEmpty(searchString))
             {
+                //those items which matches searchstring are fetched
                 applicationDbContext = applicationDbContext.Where(a => a.Title.Contains(searchString));
+
+                //returned to view using paginatedList( no need ot call constructor if await class name is used)
                 return View(await PaginatedList<Listing>.CreateAsync(applicationDbContext.Where(l => l.IsSold == false).AsNoTracking(), pageNumber ?? 1, pageSize));
 
             }
@@ -118,6 +126,7 @@ namespace ValueBid.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 await _bidsService.Add(bid);
             }
             var listing = await _listingsService.GetById(bid.ListingId);
@@ -145,57 +154,85 @@ namespace ValueBid.Controllers
         }
 
         //// GET: Listings/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null || _context.Listings == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            var applicationDbContext = _listingsService;
+            
+            
+            if (id == null || applicationDbContext.GetAll() == null)
+            {
+                return NotFound();
+            }
 
-        //    var listing = await _context.Listings.FindAsync(id);
-        //    if (listing == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", listing.IdentityUserId);
-        //    return View(listing);
-        //}
+            var listing = await applicationDbContext.GetById(id);
+            if (listing == null)
+            {
+                return NotFound();
+            }
+
+            
+            
+            return View(listing);
+        }
 
         //// POST: Listings/Edit/5
         //// To protect from overposting attacks, enable the specific properties you want to bind to.
         //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ImagePath,IsSold,IdentityUserId")] Listing listing)
-        //{
-        //    if (id != listing.Id)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ImagePath,IsSold,IdentityUserId")] Listing listing)
+        {
+            var applicationDbContext = _listingsService;
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(listing);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ListingExists(listing.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", listing.IdentityUserId);
-        //    return View(listing);
-        //}
+            if (id != listing.Id)
+            {
+                return NotFound();
+            }
+            var existingList= await applicationDbContext.GetById(id);
+
+
+
+            if (existingList !=null)
+            {
+                
+                try
+                {
+                    
+                    var listObj = new Listing
+                    {
+
+
+                        Id = id,
+                        Title = listing.Title,
+                        Description = listing.Description,
+                        Price = listing.Price,
+                        IdentityUserId = listing.IdentityUserId,
+                        ImagePath = existingList.ImagePath,
+                        User=existingList.User
+                    };
+                     await applicationDbContext.UpdateListing(listObj);
+                }
+
+
+                
+
+                catch (DbUpdateConcurrencyException)
+                {
+                    
+                    if (existingList == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Details),new {id=id});
+                }
+            
+            return View(listing);
+        }
 
         //// GET: Listings/Delete/5
         //public async Task<IActionResult> Delete(int? id)
