@@ -19,7 +19,7 @@ namespace ValueBid.Data.Services
 
         public async Task Add(Listing listing)
         {
-            
+
             _context.Listings.Add(listing);
             await _context.SaveChangesAsync();
         }
@@ -35,13 +35,12 @@ namespace ValueBid.Data.Services
             var listing = await _context.Listings.AsNoTracking()
                 .Include(l => l.User)
                 .Include(l => l.Comments)
+                .ThenInclude(l => l.User)
                 .Include(l => l.Bids)
                 .ThenInclude(l => l.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             return listing;
         }
-
-        
 
         public async Task SaveChanges()
         {
@@ -51,7 +50,7 @@ namespace ValueBid.Data.Services
         public async Task UpdateListing(Listing listing)
         {
             _context.Listings.Update(listing);
-           
+
             await _context.SaveChangesAsync();
         }
 
@@ -60,5 +59,6 @@ namespace ValueBid.Data.Services
             var users = await _context.Users.ToListAsync();
             return users;
         }
-    }
-}
+        }
+    } 
+

@@ -9,6 +9,8 @@ using ValueBid.Data;
 using ValueBid.Models;
 using ValueBid.Data.Services;
 using System.Security.Claims;
+using ValueBid.Data.Services;
+using ValueBid.Models;
 using ValueBid;
 using NPOI.HPSF;
 using System.Drawing;
@@ -180,7 +182,7 @@ namespace ValueBid.Controllers
         //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ImagePath,IsSold,IdentityUserId")] Listing listing)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ImagePath,IsSold,User,IdentityUserId")] Listing listing)
         {
             var applicationDbContext = _listingsService;
 
