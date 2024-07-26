@@ -32,6 +32,9 @@ namespace ValueBid.Controllers
             _commentsService = commentsService;
         }
 
+        
+        
+
         // GET: Listings
         public async Task<IActionResult> Index(int? pageNumber, string searchString)
         {
@@ -126,22 +129,44 @@ namespace ValueBid.Controllers
         [HttpPost]
         public async Task<ActionResult> AddBid([Bind("Id, Price, ListingId, IdentityUserId")] Bid bid)
         {
+            var applicationDbContext = _listingsService;
+            var listing = await applicationDbContext.GetById(bid.ListingId);
+
             if (ModelState.IsValid)
             {
+                var applicationBidsService = _bidsService;
                 
-                await _bidsService.Add(bid);
+                await applicationBidsService.Add(bid);
             }
-            var listing = await _listingsService.GetById(bid.ListingId);
-            listing.Price = bid.Price;
-            await _listingsService.SaveChanges();
 
-            return View("Details", listing);
+            var listObj = new Listing
+            {
+
+
+                Id = listing.Id,
+                Title = listing.Title,
+                Description = listing.Description,
+                Price = bid.Price,
+                IdentityUserId = listing.IdentityUserId,
+                ImagePath = listing.ImagePath,
+                User = listing.User
+            };
+
+
+
+            await applicationDbContext.UpdateListing(listObj);
+            
+            //await applicationDbContext.UpdateListing(listing);
+
+            return View("Details", applicationDbContext.GetById(bid.ListingId).Result);
         }
         public async Task<ActionResult> CloseBidding(int id)
         {
-            var listing = await _listingsService.GetById(id);
+            var applicationDbContext = _listingsService;
+            var listing = await applicationDbContext.GetById(id);
             listing.IsSold = true;
-            await _listingsService.SaveChanges();
+
+            await applicationDbContext.UpdateListing(listing);
             return View("Details", listing);
         }
         [HttpPost]
@@ -151,7 +176,9 @@ namespace ValueBid.Controllers
             {
                 await _commentsService.Add(comment);
             }
-            var listing = await _listingsService.GetById(comment.ListingId);
+            var applicationDbContext = _listingsService;
+
+            var listing = await applicationDbContext.GetById(comment.ListingId);
             return View("Details", listing);
         }
 
@@ -166,10 +193,24 @@ namespace ValueBid.Controllers
                 return NotFound();
             }
 
+
+
+
             var listing = await applicationDbContext.GetById(id);
-            if (listing == null)
+            if (listing == null )
             {
                 return NotFound();
+            }
+
+
+            if (listing.IdentityUserId != User.FindFirstValue(ClaimTypes.NameIdentifier))
+            {
+                return BadRequest();
+            }
+
+            if (listing.IsSold==true)
+            {
+                return BadRequest();
             }
 
             
@@ -182,7 +223,7 @@ namespace ValueBid.Controllers
         //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,ImagePath,IsSold,User,IdentityUserId")] Listing listing)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,IsSold,User,IdentityUserId")] Listing listing)
         {
             var applicationDbContext = _listingsService;
 
@@ -194,7 +235,7 @@ namespace ValueBid.Controllers
 
 
 
-            if (existingList !=null)
+            if (existingList !=null && existingList.IsSold==false)
             {
                 
                 try

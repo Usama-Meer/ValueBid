@@ -26,7 +26,7 @@ namespace ValueBid.Data.Services
 
         public IQueryable<Listing> GetAll()
         {
-            var applicationDbContext = _context.Listings.Include(l => l.User);
+            var applicationDbContext = _context.Listings.Include(l => l.User).AsNoTracking();
             return applicationDbContext;
         }
 
@@ -56,7 +56,7 @@ namespace ValueBid.Data.Services
 
         public async Task<IEnumerable<IdentityUser>> GetAllUsers()
         {
-            var users = await _context.Users.ToListAsync();
+            var users = await _context.Users.AsNoTracking().ToListAsync();
             return users;
         }
         }

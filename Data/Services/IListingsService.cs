@@ -10,6 +10,8 @@ namespace ValueBid.Data.Services
         public IQueryable<Listing> GetAll();
         
         //added add method
+
+
         Task Add(Listing listing);
 
         //added for details

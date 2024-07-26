@@ -9,6 +9,7 @@ namespace ValueBid.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
 
         public DbSet<Listing> Listings { get; set; }

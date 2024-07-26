@@ -102,6 +102,12 @@
             <div>
                 Listed by: @Model.User.UserName
             </div>
+            <div>
+                @if (Model.IdentityUserId == userManager.GetUserId(User) && Model.IsSold==false)
+                {
+                    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+                }
+            </div>
             @if(User.Identity.IsAuthenticated)
             {
             @if (userManager.GetUserId(User)==Model.User.Id)
@@ -119,41 +125,11 @@
 
 <br />
 
-<!--Add Comment section-->
-@if (User.Identity.IsAuthenticated)
-{
-    <div class="container">
-        <form asp-action="AddComment" method="post">
-            <h6>Add Comment</h6>
-            <textarea class="form-control" aria-label="With textarea" name="Content" style="width:40%; vertical-align:top;">
-            </textarea>
-            <!--Name of the user who submits the bid-->
-            <input type="hidden" name="IdentityUserId" class="form-control" value="@userManager.GetUserId(User)" />
 
-            <!--listingId-->
-            <input type="hidden" name="ListingId" class="form-control" value="@Model.Id" />
-
-            <input type="submit" class="btn btn-primary" style="display:inline-block; margin-top:10px;" />
-        </form>
-    </div>
-}
-else
-{
-    <div class="container">
-
-            <h6>Add Comment</h6>
-            <textarea class="form-control" aria-label="With textarea" name="Content" style="width:40%; vertical-align:top;">
-                </textarea>
-            
-            <input type="submit" disabled class="btn btn-primary" style="display:inline-block; margin-top:10px;" />
-    </div>
-}
-
-<br>
 <!--view comments -->
 
 
-<section style="background-color: #8A8185;">
+<section style="background-color: rgba(138,129,133,0.6);">
   <div class="container my-5 py-5">
     <div class="row d-flex justify-content-center">
       <div class="col-md-12 col-lg-10">
@@ -175,7 +151,7 @@ else
                                              src="~/Images/User-Profile-PNG-Image.png" alt="avatar" width="40"
                                         height="40" />
                                 <div>
-                                    <h6 class="fw-bold mb-1">@(comment.User?.UserName ?? "unknown User")</h6>
+                                            <h6 class="fw-bold mb-1">@(comment.User?.UserName.Substring(0, 4) + "****" + comment.User?.UserName.Substring(comment.User.UserName.Length-4, 4) ?? "unknown User")</h6>
                         
                                     <p class="mb-0">
                                         @(comment.Content ?? "No Content")
@@ -192,16 +168,51 @@ else
                     <p>No Comments</p>
                     }
                     </div>
+        
+          <div class="card-body p-4">
+
+            <!--Add Comment section-->
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <form asp-action="AddComment" method="post">
+                        <h6>Add Comment</h6>
+                        <textarea class="form-control" aria-label="With textarea" name="Content" style="width:100%; vertical-align:top;">
+                        </textarea>
+                        <!--Name of the user who submits the bid-->
+                        <input type="hidden" name="IdentityUserId" class="form-control" value="@userManager.GetUserId(User)" />
+
+                        <!--listingId-->
+                        <input type="hidden" name="ListingId" class="form-control" value="@Model.Id" />
+
+                        <input type="submit" class="btn btn-primary" style="display:inline-block; margin-top:10px;" />
+                    </form>
                 </div>
+            }
+            else
+            {
+                <div>
+
+                    <h6>Add Comment</h6>
+                    <textarea class="form-control" aria-label="With textarea" name="Content" style="width:100%; vertical-align:top;">
+        </textarea>
+
+                    <input type="submit" disabled class="btn btn-primary" style="display:inline-block; margin-top:10px;" />
+                </div>
+            }
+
+            <br>
+          </div>
+
+        </div>
 
 
 
 
 
-            </div>
       </div>
     </div>
-  </div>
+   </div>
 </section>
 
 
